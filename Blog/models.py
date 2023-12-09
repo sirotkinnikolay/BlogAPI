@@ -1,6 +1,5 @@
 from django.conf import settings
 from django.db import models
-from django.contrib.auth.models import AbstractUser
 from rest_framework.viewsets import ModelViewSet
 
 
@@ -36,7 +35,7 @@ class AuthorModel(models.Model):
     born = models.DateField(max_length=100, verbose_name='дата рождения')
     city = models.CharField(max_length=100, verbose_name='город автора')
     user_access = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, blank=True, null=True,
-                                    verbose_name='спользователь с правами доступа')
+                                    verbose_name='пользователь с правами доступа')
 
     class Meta:
         verbose_name = 'Автор'
@@ -44,8 +43,3 @@ class AuthorModel(models.Model):
 
     def __str__(self):
         return self.author_name
-
-
-class DataViewSet(ModelViewSet):
-    def perform_create(self, serializer):
-        serializer.save(c=5)
