@@ -1,7 +1,6 @@
 from rest_framework import serializers
 from rest_framework.fields import CurrentUserDefault
 from rest_framework.serializers import ModelSerializer
-
 from .models import *
 
 

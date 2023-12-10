@@ -1,3 +1,5 @@
+from django.contrib.auth import logout
+from django.shortcuts import redirect
 from .serializers import *
 
 
@@ -11,7 +13,7 @@ class AuthorViewSet(ModelViewSet):
     serializer_class = AuthorModelSerializer
 
 
-
-
-
+def your_logout_view(request):
+    logout(request)
+    return redirect('/api/authors/')
 

@@ -1,3 +1,4 @@
+from django.contrib.auth.views import LogoutView
 from rest_framework import routers
 from .views import *
 from django.urls import path, include
@@ -28,6 +29,7 @@ schema_view = get_schema_view(
 
 urlpatterns = [
     path('api/', include(router.urls)),
+    path('api/auth/logout/', your_logout_view),
     path('api/auth/', include('rest_framework.urls')),
     path('swagger<format>/', schema_view.without_ui(cache_timeout=0), name='schema-json'),
     path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),

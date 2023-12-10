@@ -113,7 +113,7 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
 LOGIN_REDIRECT_URL = '/api/authors/'
-SESSION_COOKIE_AGE = 60
+SESSION_COOKIE_AGE = 10 * 60
 MEDIA_URL = '/media/'
 
 REST_FRAMEWORK = {
@@ -122,10 +122,5 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.SessionAuthentication',
         'rest_framework.authentication.TokenAuthentication',
     ),
-    'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.IsAuthenticated',
-    ]
 }
 
-LOGIN_URL = '/api/auth/login/'
-LOGOUT_URL = '/api/auth/logout/'
