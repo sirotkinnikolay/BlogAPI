@@ -1,3 +1,4 @@
+import datetime
 import os
 from pathlib import Path
 
@@ -118,6 +119,7 @@ LOGIN_REDIRECT_URL = '/api/authors/'
 LOGOUT_REDIRECT_URL = '/api/posts/'
 SESSION_COOKIE_AGE = 10 * 60
 MEDIA_URL = '/media/'
+TOKEN_TTL = datetime.timedelta(days=15)
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
