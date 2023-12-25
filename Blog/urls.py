@@ -11,6 +11,7 @@ from drf_yasg import openapi
 router = routers.SimpleRouter()
 router.register(r'posts', PostViewSet)
 router.register(r'authors', AuthorViewSet)
+router.register(r'sub', SubscriptionViewSet)
 
 
 schema_view = get_schema_view(

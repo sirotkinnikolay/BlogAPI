@@ -1,6 +1,15 @@
 from django.conf import settings
+from django.contrib.auth.models import AbstractUser
 from django.db import models
-from rest_framework.viewsets import ModelViewSet
+from Blog.tasks import *
+
+
+class User(AbstractUser):
+    date_birth = models.DateTimeField(blank=True, null=True, verbose_name="Дата рождения")
+
+    class Meta:
+        verbose_name = 'Пользователь'
+        verbose_name_plural = 'Пользователи'
 
 
 class PostModel(models.Model):
@@ -11,8 +20,17 @@ class PostModel(models.Model):
     create_at = models.DateField(auto_now_add=True, verbose_name='дата создания')
     update_date = models.DateTimeField(auto_now=True, verbose_name='дата обновления')
     image = models.FileField(default=None, blank=True, null=True, upload_to='files/', verbose_name='фото ')
-    user_create = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, blank=True, null=True,
+    user_create = models.ForeignKey('User', on_delete=models.CASCADE, blank=True, null=True,
                                     verbose_name='создано пользователем')
+
+    def save(self, *args, **kwargs):
+        print('-----------create_post_object---------------->')
+        ####################################  test_celery.delay() ##################################
+
+        if not self._state.adding and (
+                self.creator_id != self._loaded_values['creator_id']):
+            raise ValueError("Updating the value of creator isn't allowed")
+        super().save(*args, **kwargs)
 
     class Meta:
         verbose_name = 'Пост'
@@ -43,3 +61,12 @@ class AuthorModel(models.Model):
 
     def __str__(self):
         return self.author_name
+
+
+class Subscription(models.Model):
+    user_sub = models.ForeignKey('User', on_delete=models.CASCADE, verbose_name='подписанный пользователь')
+    author_sub = models.ForeignKey('AuthorModel', on_delete=models.CASCADE, verbose_name='автор подписки')
+
+    class Meta:
+        verbose_name = 'Подписка'
+        verbose_name_plural = 'Подписки'

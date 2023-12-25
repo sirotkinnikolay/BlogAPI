@@ -1,6 +1,7 @@
-from django.contrib import admin
+from django.contrib.auth.admin import UserAdmin
 
-from .models import PostModel, AuthorModel, TopicModel
+from .models import PostModel, AuthorModel, TopicModel, User, Subscription
+from django.contrib import admin
 
 
 class PostAdmin(admin.ModelAdmin):
@@ -18,7 +19,17 @@ admin.site.register(AuthorModel, AuthorAdmin)
 
 
 class TopicAdmin(admin.ModelAdmin):
-    list_display = ['topic_title' ]
+    list_display = ['topic_title']
 
 
 admin.site.register(TopicModel, TopicAdmin)
+
+
+class SubscriptionAdmin(admin.ModelAdmin):
+    list_display = ['user_sub', 'author_sub']
+
+
+admin.site.register(Subscription, SubscriptionAdmin)
+
+
+admin.site.register(User, UserAdmin)

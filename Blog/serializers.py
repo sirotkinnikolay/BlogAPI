@@ -29,3 +29,9 @@ class TopicModelSerializer(ModelSerializer):
     class Meta:
         model = TopicModel
         fields = "__all__"
+
+
+class SubscriptionSerializer(ModelSerializer):
+    class Meta:
+        model = Subscription
+        fields = "__all__"
