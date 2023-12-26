@@ -10,20 +10,28 @@ app = Celery('myapp', broker='redis://localhost:6379/0')
 def test_celery(email_ad, text):
     print(f'Отправлен email на адрес: {email_ad} с текстом: {text}')
 
-    # Скрипт для отправки сообщения на почту пользователя, подписанного на автора
-    # email = 'my_email@mail.ru'
-    # password = 'my_password'
-    #
-    # server = smtplib.SMTP('smtp.yandex.ru', 587)
-    # server.ehlo()
-    # server.starttls()
-    # server.login(email, password)
-    #
-    # dest_email = email_ad
-    # subject = 'Subscription message'
-    # email_text = text
-    # message = 'From: %s\nTo: %s\nSubject: %s\n\n%s' % (email, dest_email, subject, email_text)
-    #
-    # server.set_debuglevel(1)
-    # server.sendmail(email, dest_email, message)
-    # server.quit()
+    user = "sirotos@yandex.ru"
+    passwd = "*****************"
+    server = "smtp.yandex.ru"
+    port = 587
+
+    subject = "Тестовое письмо."
+    to = "sirotkin.nikola@mail.ru"
+    charset = 'Content-Type: text/plain; charset=utf-8'
+    mime = 'MIME-Version: 1.0'
+    text = text
+
+    body = "\r\n".join((f"From: {user}", f"To: {to}",
+                        f"Subject: {subject}", mime, charset, "", text))
+
+    try:
+        smtp = smtplib.SMTP(server, port)
+        smtp.starttls()
+        smtp.ehlo()
+        smtp.login(user, passwd)
+        smtp.sendmail(user, to, body.encode('utf-8'))
+    except smtplib.SMTPException as err:
+        print(err)
+        raise err
+    finally:
+        smtp.quit()
