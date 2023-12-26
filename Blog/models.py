@@ -1,7 +1,7 @@
 from django.conf import settings
 from django.contrib.auth.models import AbstractUser
 from django.db import models
-from Blog.tasks import *
+from tasks import test_celery
 
 
 class User(AbstractUser):
@@ -25,7 +25,7 @@ class PostModel(models.Model):
 
     def save(self, *args, **kwargs):
         print('-----------create_post_object---------------->')
-        ####################################  test_celery.delay() ##################################
+        test_celery.delay()
 
         if not self._state.adding and (
                 self.creator_id != self._loaded_values['creator_id']):
