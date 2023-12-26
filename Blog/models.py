@@ -1,15 +1,22 @@
 from django.conf import settings
 from django.contrib.auth.models import AbstractUser
 from django.db import models
-from tasks import test_celery
+from Blog.tasks import test_celery
 
 
 class User(AbstractUser):
+    email = models.EmailField(verbose_name='email', unique=True)
     date_birth = models.DateTimeField(blank=True, null=True, verbose_name="Дата рождения")
+
+    USERNAME_FIELD = 'email'
+    REQUIRED_FIELDS = []
 
     class Meta:
         verbose_name = 'Пользователь'
         verbose_name_plural = 'Пользователи'
+
+    def __str__(self):
+        return self.email
 
 
 class PostModel(models.Model):
@@ -24,8 +31,12 @@ class PostModel(models.Model):
                                     verbose_name='создано пользователем')
 
     def save(self, *args, **kwargs):
-        print('-----------create_post_object---------------->')
-        test_celery.delay()
+        result = Subscription.objects.filter(author_sub=self.post_author)
+        for i in result:
+            email_send = str(i.user_sub)
+            author_send = str(self.post_author)
+
+            test_celery.delay(email_send, f'Автор {author_send} опубликовал новую запись.')
 
         if not self._state.adding and (
                 self.creator_id != self._loaded_values['creator_id']):
