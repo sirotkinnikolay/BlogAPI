@@ -1,4 +1,3 @@
-# Create your tasks here
 from celery import *
 from celery import Celery
 import smtplib
@@ -7,7 +6,7 @@ app = Celery('myapp', broker='redis://localhost:6379/0')
 
 
 @app.task
-def test_celery(email_ad, text):
+def send_mail_celery(email_ad, text):
     print(f'Отправлен email на адрес: {email_ad} с текстом: {text}')
 
     user = "sirotos@yandex.ru"

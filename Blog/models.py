@@ -1,7 +1,7 @@
 from django.conf import settings
 from django.contrib.auth.models import AbstractUser
 from django.db import models
-from Blog.tasks import test_celery
+from Blog.tasks import send_mail_celery
 
 
 class User(AbstractUser):
@@ -36,7 +36,7 @@ class PostModel(models.Model):
             email_send = str(i.user_sub)
             author_send = str(self.post_author)
 
-            test_celery.delay(email_send, f'Автор {author_send} опубликовал новую запись.')
+            send_mail_celery.delay(email_send, f'Автор {author_send} опубликовал новую запись.')
 
         if not self._state.adding and (
                 self.creator_id != self._loaded_values['creator_id']):
