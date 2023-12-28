@@ -30,18 +30,18 @@ class PostModel(models.Model):
     user_create = models.ForeignKey('User', on_delete=models.CASCADE, blank=True, null=True,
                                     verbose_name='создано пользователем')
 
-    def save(self, *args, **kwargs):
-        result = Subscription.objects.filter(author_sub=self.post_author)
-        for i in result:
-            email_send = str(i.user_sub)
-            author_send = str(self.post_author)
-
-            send_mail_celery.delay(email_send, f'Автор {author_send} опубликовал новую запись.')
-
-        if not self._state.adding and (
-                self.creator_id != self._loaded_values['creator_id']):
-            raise ValueError("Updating the value of creator isn't allowed")
-        super().save(*args, **kwargs)
+    # def save(self, *args, **kwargs):
+    #     result = Subscription.objects.filter(author_sub=self.post_author)
+    #     for i in result:
+    #         email_send = str(i.user_sub)
+    #         author_send = str(self.post_author)
+    #
+    #         send_mail_celery.delay(email_send, f'Автор {author_send} опубликовал новую запись.')
+    #
+    #     if not self._state.adding and (
+    #             self.creator_id != self._loaded_values['creator_id']):
+    #         raise ValueError("Updating the value of creator isn't allowed")
+    #     super().save(*args, **kwargs)
 
     class Meta:
         verbose_name = 'Пост'
