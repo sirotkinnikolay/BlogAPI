@@ -3,22 +3,28 @@ from celery import Celery
 import smtplib
 from decouple import config
 import logging
+from celery.utils.log import get_task_logger
 
 app = Celery('myapp', broker='redis://localhost:6379/0')
 
-logger = logging.getLogger('tasks_logger')
-logging.basicConfig(
-    level=logging.INFO,
-    filename="tasks-log_file.log",
-    filemode="a",
-    format="%(asctime)s %(levelname)s %(message)s",
-    datefmt='%H:%M:%S',
-)
+logger = get_task_logger('celery_logging')
+logger.setLevel(logging.INFO)
+handler_c = logging.FileHandler("celery_logging_file.log", mode='a')
+formatter_c = logging.Formatter("%(name)s %(asctime)s %(levelname)s %(message)s")
+handler_c.setFormatter(formatter_c)
+logger.addHandler(handler_c)
+
+
 @app.task
 def send_mail_celery(email_ad, text):
-    user = config("USER_SMTP_EMAIL")
-    passwd = config("USER_SMTP_PASS")
+    # user = config("USER_SMTP_EMAIL")
+    # passwd = config("USER_SMTP_PASS")
+
+    user = 'sirotos@yandex.ru'
+    passwd = 'nikola.sirotkin.yandex'
+
     logger.info(f'Отправлен email на адрес: {email_ad} с текстом: {text}')
+
     server = "smtp.yandex.ru"
     port = 587
     subject = "Тестовое письмо."

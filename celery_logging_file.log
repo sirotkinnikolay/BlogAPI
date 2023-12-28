@@ -1,0 +1,2 @@
+celery_logging 2023-12-28 21:26:53,985 INFO Отправлен email на адрес: admin@mail.ru с текстом: author-1
+celery_logging 2023-12-28 21:29:46,463 INFO Отправлен email на адрес: admin@mail.ru с текстом: author-1
