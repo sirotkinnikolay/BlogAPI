@@ -29,7 +29,9 @@ def send_mail_celery(email_ad, text):
         smtp.login(user, passwd)
         smtp.sendmail(user, to, body.encode('utf-8'))
     except smtplib.SMTPException as err:
-        print(err)
+        print(err)  # TODO: add logging
         raise err
+    except Exception as error:
+        print(error)
     finally:
         smtp.quit()
