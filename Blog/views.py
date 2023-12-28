@@ -5,8 +5,6 @@ import logging
 from .serializers import *
 
 
-
-
 class PostViewSet(ModelViewSet):
     # authentication_classes = (TokenAuthentication,)
     queryset = PostModel.objects.all()
